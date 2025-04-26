@@ -1,9 +1,13 @@
-
+import { UserButton } from "@clerk/nextjs";
 
 export default function Home() {
   return (
     <div>
-      This is a protected route. You can only see this if you are Logged in.
+      <UserButton 
+      afterSignOutUrl="/sign-in"
+      />
+      <p>Welcome to the application!</p>
+      <p>Enjoy your stay!</p>
     </div>
   );
 }
