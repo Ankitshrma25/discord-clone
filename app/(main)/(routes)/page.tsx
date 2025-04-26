@@ -8,6 +8,7 @@ export default function Home() {
       />
       <p>Welcome to the application!</p>
       <p>Enjoy your stay!</p>
+      <p>Feel free to explore the features and functionalities.</p>
     </div>
   );
 }
