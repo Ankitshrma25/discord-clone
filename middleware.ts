@@ -14,9 +14,9 @@ export default clerkMiddleware(async (auth, req): Promise<void> => {
   if (!isPublicRoute(req)) {
     await auth.protect(); // if route is not public, protect it
   }
-})
+});
 
-// this is config used to match for your middleware apllication
+// this is config used to match for your middleware application
 export const config = {
   matcher: [
     // Skip Next.js internals and all static files, unless found in search params
