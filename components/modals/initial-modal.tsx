@@ -3,6 +3,7 @@
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useState, useEffect } from "react";
 
 
 import {
@@ -38,6 +39,14 @@ const formSchema = z.object({
 })
 
 export const InitialModal = () => {
+
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -55,6 +64,9 @@ export const InitialModal = () => {
         
     }
 
+    if (!isMounted){ 
+        return null;
+     } 
 
     return (
        <Dialog open>
@@ -65,9 +77,7 @@ export const InitialModal = () => {
                         Give your server a personality with a name and an image. You can always change it later.
                     </DialogDescription>
                 </DialogHeader>
-                <DialogFooter>
-                    <button className="btn">Get Started</button>
-                </DialogFooter>
+            
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} 
                     className="space-y-8">
@@ -88,20 +98,22 @@ export const InitialModal = () => {
                                         <FormControl>
                                             <Input 
                                             disabled={isloading}
-                                            placeholder="Server name"
+                                            placeholder="Enter a Server name"
                                             className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black
                                             focus-visible:ring-offset-0"
                                             {...field}
                                             />
                                         </FormControl>
-                                            
+                                        <FormMessage />  
                                     </FormItem>
 
                                 )}
                             />
 
                         </div>
-
+                        <DialogFooter className="bg-gray-100 px-6 py-4">
+                    <Button variant="primary" disabled={isloading} >Get Started</Button>
+                </DialogFooter>
                     </form>
                 </Form>
 
