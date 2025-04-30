@@ -1,9 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // config options
   images: {
-    domains: [
-      "xbjmo2iodr.ufs.sh",
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "xbjmo2iodr.ufs.sh", // Uploadthing
+        port: "", 
+        pathname: "/**", 
+      },
       
     ],
   },

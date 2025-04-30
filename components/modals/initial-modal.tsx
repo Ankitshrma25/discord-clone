@@ -4,6 +4,7 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 
 import {
@@ -28,6 +29,7 @@ import  {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/file-upload";
+import { useRouter } from "next/navigation";
 
 //schema for form
 const formSchema = z.object({
@@ -41,7 +43,10 @@ const formSchema = z.object({
 
 export const InitialModal = () => {
 
-    const [isMounted, setIsMounted] = useState(false);
+    const [isMounted, setIsMounted] = useState(false); // State to track if the component is mounted
+
+    const router = useRouter(); // useRouter hook to navigate after form submission
+
 
     useEffect(() => {
         setIsMounted(true);
@@ -60,9 +65,18 @@ export const InitialModal = () => {
     const isloading = form.formState.isSubmitting;
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        console.log(values);
-        // const { name, imageUrl } = values;
-        
+        try {
+            await axios.post("/api/servers", values); // Send the form data to the server
+
+
+            form.reset();
+            // Optionally, you can close the modal or perform any other action after successful submission
+            router.refresh(); // Refresh the page to reflect the new server
+            window.location.reload(); // Reload the page to reflect the new server
+
+        } catch (error) {
+            console.log("Error creating server:", error);
+        }
     }
 
     if (!isMounted){ 
