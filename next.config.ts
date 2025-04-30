@@ -1,7 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  images: {
+    domains: [
+      "xbjmo2iodr.ufs.sh",
+      
+    ],
+  },
 };
 
 export default nextConfig;
