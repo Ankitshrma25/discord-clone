@@ -22,6 +22,9 @@ export const NavigationItem = ({
 
     const router = useRouter(); // Navigation Router Hook to handle navigation
 
+    const onClick = () => {
+        router.push(`/servers/${id}`); // Navigate to the channel page with the server ID
+    }
 
     return (
         <ActionTooltip
@@ -31,9 +34,7 @@ export const NavigationItem = ({
         >
           <button
             className="group relative flex items-center"
-            onClick={() => {
-                
-            }}
+            onClick={onClick} // Handle click event to navigate to the channel page
           >
             <div className={cn(
                 "absolute left-0 bg-primary rounded-r-full transition-all w-[4px]",
