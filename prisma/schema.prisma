@@ -1,11 +1,16 @@
+
 generator client {
   provider = "prisma-client-js"
-  output   = "./generated/client"
+  output   = "../lib/generated/prisma/client"
 }
 
+
+// prisma/schema.prisma
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url  	    = env("DATABASE_URL")
+  // uncomment next line if you use Prisma <5.10
+  // directUrl = env("DATABASE_URL_UNPOOLED")
 }
 
 model Profile {
@@ -23,6 +28,7 @@ model Profile {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
 
 model Server {
   id    String  @id @default(uuid())
@@ -48,6 +54,7 @@ enum MemberRole {
   MODERATOR
   GUEST
 }
+
 
 model Member {
   id    String     @id @default(uuid())

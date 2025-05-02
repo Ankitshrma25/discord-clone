@@ -1,13 +1,13 @@
+// app/layout.tsx
+// This is the Root layout of the app
+
 import type { Metadata } from 'next'
+
 import { ThemeProvider } from '@/components/providers/theme-provider'
-import {
-  ClerkProvider,
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from '@clerk/nextjs'
+import { ModalProvider } from '@/components/providers/modal-provider'
+
+import { ClerkProvider } from '@clerk/nextjs'
+
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { cn } from '@/lib/utils'
@@ -48,17 +48,7 @@ export default function RootLayout({
             storageKey="disable-theme"
             disableTransitionOnChange
           >
-
-          
-          <header className="flex justify-end items-center p-4 gap-4 h-16">
-            <SignedOut>
-              <SignInButton />
-              <SignUpButton />
-            </SignedOut>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
-          </header>
+          <ModalProvider />
           {children}
           </ThemeProvider>
         </body>

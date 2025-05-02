@@ -1,3 +1,6 @@
+// This is the initial modal
+// .components/modals/initial-modal.tsx
+
 "use client";
 
 import * as z from "zod";
@@ -38,43 +41,49 @@ const formSchema = z.object({
     }),
     imageUrl: z.string().min(1, {
         message: "Server Image is required."
-    })
-})
+    }),
+});
 
+// This is the initial modal
 export const InitialModal = () => {
+     // State to track if the component is mounted
+    const [isMounted, setIsMounted] = useState(false);
 
-    const [isMounted, setIsMounted] = useState(false); // State to track if the component is mounted
-
-    const router = useRouter(); // useRouter hook to navigate after form submission
+    // useRouter hook to navigate after form submission
+    const router = useRouter(); 
 
 
     useEffect(() => {
         setIsMounted(true);
     }, []);
 
-
+    // This is form value and validation from react-hook-form and zod
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: "",
             imageUrl: "",
-        }
+        },
     });
 
-
+    // This is loading state for the form
     const isloading = form.formState.isSubmitting;
 
+    // This is the function to handle form submission
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            await axios.post("/api/servers", values); // Send the form data to the server
+            // Make a POST request to create a server
+            await axios.post("/api/servers", values); 
 
-
+            // Reset the form after submission
             form.reset();
-            // Optionally, you can close the modal or perform any other action after successful submission
-            router.refresh(); // Refresh the page to reflect the new server
-            window.location.reload(); // Reload the page to reflect the new server
+            // Refresh the page after successful submission
+            router.refresh(); 
+            // Reload the page to reflect the changes
+            window.location.reload(); 
 
         } catch (error) {
+            // Handle the error
             console.log("Error creating server:", error);
         }
     }
@@ -84,69 +93,77 @@ export const InitialModal = () => {
      } 
 
     return (
-       <Dialog open>
-            <DialogContent className="bg-white text-black p-0 overflow-hidden top-0 left-0 translate-x-[-50%] translate-y-[-50%] sm:max-w-lg sm:w-full">
-                <DialogHeader className="pt-8 px-6">
-                    <DialogTitle className="text-2xl text-center font-bold">Customize your server</DialogTitle>
-                    <DialogDescription className="text-center text-zinc-500">
-                        Give your server a personality with a name and an image. You can always change it later.
-                    </DialogDescription>
-                </DialogHeader>
-            
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} 
-                    className="space-y-8">
-                        <div className="space-y-8 px-6">
-                            <div className="flex items-center justify-center text-center">
-                                <FormField
-                                control={form.control}
-                                name="imageUrl"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormControl>
-                                            <FileUpload 
-                                                endpoint="serverImage"
-                                                value={field.value}
-                                                onChange={field.onChange}
-                                            />
-                                        </FormControl>
-                                    </FormItem>
-                                )}
-                                 />
-                            </div>
-
-                            <FormField 
-                                control={form.control}
-                                name="name"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel className="uppercase text-sm font-bold text-zinc-500
-                                        dark:text-secondary/70">
-                                            Server name
-                                        </FormLabel>
-                                        <FormControl>
-                                            <Input 
-                                            disabled={isloading}
-                                            placeholder="Enter a Server name"
-                                            className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black
-                                            focus-visible:ring-offset-0"
-                                            {...field}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />  
-                                    </FormItem>
-
-                                )}
+        <>
+        <Dialog open>
+          <DialogContent
+            className="overflow-hidden bg-white p-0 text-black"
+            aria-describedby="Initial Modal for new users"
+          >
+            <DialogHeader className="px-6 pt-8">
+              <DialogTitle className="text-center text-2xl font-bold">
+                Create your first server
+              </DialogTitle>
+              <DialogDescription className="text-center text-zinc-500">
+                Give your server a personality with a name and an image. You can
+                always change it later.
+              </DialogDescription>
+            </DialogHeader>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                <div className="space-y-8 px-6">
+                  <div className="flex items-center justify-center text-center">
+                    <FormField
+                      control={form.control}
+                      name="imageUrl"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <FileUpload
+                              endpoint="serverImage"
+                              value={field.value}
+                              onChange={field.onChange}
                             />
-
-                        </div>
-                        <DialogFooter className="bg-gray-100 px-6 py-4">
-                    <Button variant="primary" disabled={isloading} >Get Started</Button>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="dark:text-secondary/70 text-xs font-bold text-zinc-500 uppercase">
+                          Server Name
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="Enter server name"
+                            {...field}
+                            disabled={isloading}
+                            className="border-0 bg-zinc-300/50 text-black focus-visible:ring-0 focus-visible:ring-offset-0 dark:bg-zinc-300/50"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <DialogFooter className="bg-gray-100 px-6 py-4">
+                  <Button
+                    disabled={isloading}
+                    variant={"primary"}
+                    className="w-full"
+                  >
+                    Create
+                  </Button>
                 </DialogFooter>
-                    </form>
-                </Form>
-
-            </DialogContent>
-       </Dialog>
+              </form>
+            </Form>
+          </DialogContent>
+        </Dialog>
+      </>
     )
 }
