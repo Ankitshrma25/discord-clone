@@ -12,6 +12,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { cn } from '@/lib/utils'
 
+
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
@@ -48,7 +49,10 @@ export default function RootLayout({
             storageKey="disable-theme"
             disableTransitionOnChange
           >
+
+            
           <ModalProvider />
+            
           {children}
           </ThemeProvider>
         </body>

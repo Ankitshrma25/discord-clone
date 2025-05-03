@@ -95,6 +95,7 @@ export const CreateServerModal = () => {
 <>
       <Dialog open={isModalOpen} onOpenChange={handleClose}>
         <DialogContent
+         
           className="overflow-hidden bg-white p-0 text-black"
           aria-describedby="Create your first server"
         >

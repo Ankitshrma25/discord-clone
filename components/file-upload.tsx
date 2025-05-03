@@ -2,12 +2,12 @@
 import { X } from "lucide-react";
 import Image from "next/image";
 
-import { Url } from "next/dist/shared/lib/router/router";
+
 import { UploadDropzone } from "@/lib/uploadthing";
 
 
-import "@uploadthing/react/styles.css";
-import { error } from "console";
+
+
 
 interface FileUploadProps {
     onChange: (Url?: string) => void;
