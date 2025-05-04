@@ -21,12 +21,13 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useOrigin } from "@/hooks/use-origin";
+import axios from "axios";
 
 
 export const InviteModal = () => {
 
-    // Modal that has the useModal hook which is use for data centralization
-    const { isOpen, onClose, type, data } = useModal(); 
+    // Modal hook that has the useModal hook which is use for data centralization
+    const { onOpen,isOpen, onClose, type, data } = useModal(); 
     // Hook that provies the current url
     const origin = useOrigin();  
   
@@ -54,7 +55,20 @@ export const InviteModal = () => {
         setCopied(false);
       }, 1000);
     }
-   
+    
+
+    // fucntion to refresh the invite code
+    const onNew = async () => {
+      try {
+        SetIsLoading(true);
+        const response = await axios.patch(`/api/servers/${server?.id}/invite-code`);
+        onOpen("invite", { server: response.data });
+      } catch (error) {
+        console.log(error);
+      } finally {
+        SetIsLoading(false);
+      }
+    }
 
     
     return (
@@ -78,10 +92,11 @@ export const InviteModal = () => {
           </Label>
           <div className="flex items-center mt-2 gap-x-2">
             <Input 
+            disabled={isLoading}
               className="border-0 bg-zinc-300/50 text-black focus-visible:ring-0 focus-visible:ring-offset-0"
               value={inviteUrl}
             />
-            <Button onClick={onCopy} size="icon">
+            <Button disabled={isLoading} onClick={onCopy} size="icon">
               {copied 
               ? <Check className="h-4 w-4" /> 
               :  <Copy className="h-4 w-4" />
@@ -90,6 +105,8 @@ export const InviteModal = () => {
             </Button>
           </div>
           <Button
+          disabled={isLoading}
+          onClick={onNew}
           variant="link"
           size="sm"
             className="text-xs text-zinc-500 mt-4"
