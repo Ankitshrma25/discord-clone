@@ -24,16 +24,20 @@ import { useOrigin } from "@/hooks/use-origin";
 
 export const InviteModal = () => {
 
-    // Modal Store for opening and closing the modal
-    const { isOpen, onClose, type } = useModal(); 
+    // Modal that has the useModal hook which is use for data centralization
+    const { isOpen, onClose, type, data } = useModal(); 
     // Hook that provies the current url
     const origin = useOrigin();  
   
 
     // This is for opening the modal for creating a server
     const isModalOpen = isOpen && type === "invite";
+    // Extract the server from the data
+    const { server } = data;
+
+
     // constant to store the invite url
-    const inviteUrl = `${origin}`;
+    const inviteUrl = `${origin}/invite/${server?.inviteCode}`;
    
 
     
