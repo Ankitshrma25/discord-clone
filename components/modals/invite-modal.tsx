@@ -19,16 +19,21 @@ import { useModal } from "@/hooks/use-modal-store";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useOrigin } from "@/hooks/use-origin";
 
 
 export const InviteModal = () => {
 
     // Modal Store for opening and closing the modal
-    const { isOpen, onClose, type } = useModal();   
+    const { isOpen, onClose, type } = useModal(); 
+    // Hook that provies the current url
+    const origin = useOrigin();  
   
 
     // This is for opening the modal for creating a server
     const isModalOpen = isOpen && type === "invite";
+    // constant to store the invite url
+    const inviteUrl = `${origin}`;
    
 
     
@@ -54,7 +59,7 @@ export const InviteModal = () => {
           <div className="flex items-center mt-2 gap-x-2">
             <Input 
               className="border-0 bg-zinc-300/50 text-black focus-visible:ring-0 focus-visible:ring-offset-0"
-              value={"Invite-Link"}
+              value={inviteUrl}
             />
             <Button size="icon">
               <Copy className="h-4 w-4" />
