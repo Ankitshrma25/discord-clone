@@ -5,7 +5,8 @@
 "use client";
 
 
-import { Copy, RefreshCw } from "lucide-react";
+import { Check, Copy, RefreshCw } from "lucide-react";
+import { useState } from "react";
 
 import {
     Dialog,
@@ -35,9 +36,24 @@ export const InviteModal = () => {
     // Extract the server from the data
     const { server } = data;
 
+    const [copied, setCopied] = useState(false);
+
+    const [isLoading, SetIsLoading] = useState(false);
+
 
     // constant to store the invite url
     const inviteUrl = `${origin}/invite/${server?.inviteCode}`;
+
+
+    // function to copy invite code
+    const onCopy = () => {
+      navigator.clipboard.writeText(inviteUrl);
+      setCopied(true);
+
+      setTimeout(() => {
+        setCopied(false);
+      }, 1000);
+    }
    
 
     
@@ -65,8 +81,12 @@ export const InviteModal = () => {
               className="border-0 bg-zinc-300/50 text-black focus-visible:ring-0 focus-visible:ring-offset-0"
               value={inviteUrl}
             />
-            <Button size="icon">
-              <Copy className="h-4 w-4" />
+            <Button onClick={onCopy} size="icon">
+              {copied 
+              ? <Check className="h-4 w-4" /> 
+              :  <Copy className="h-4 w-4" />
+              }
+             
             </Button>
           </div>
           <Button
