@@ -5,17 +5,20 @@
 "use client";
 
 
+import { Copy, RefreshCw } from "lucide-react";
 
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog"
 
 
 import { useModal } from "@/hooks/use-modal-store";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 
 export const InviteModal = () => {
@@ -39,14 +42,33 @@ export const InviteModal = () => {
         >
           <DialogHeader className="px-6 pt-8">
             <DialogTitle className="text-center text-2xl font-bold">
-              Create your server
+              Invite People
             </DialogTitle>
-            <DialogDescription className="text-center text-zinc-500">
-              Give your server a personality with a name and an image. You can
-              always change it later.
-            </DialogDescription>
           </DialogHeader>
-         Invite Modal!!
+         <div className="p-6">
+          <Label
+            className="text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-secondary/70"
+          >
+            Server Invite Link
+          </Label>
+          <div className="flex items-center mt-2 gap-x-2">
+            <Input 
+              className="border-0 bg-zinc-300/50 text-black focus-visible:ring-0 focus-visible:ring-offset-0"
+              value={"Invite-Link"}
+            />
+            <Button size="icon">
+              <Copy className="h-4 w-4" />
+            </Button>
+          </div>
+          <Button
+          variant="link"
+          size="sm"
+            className="text-xs text-zinc-500 mt-4"
+          >
+            Generate a new link
+            <RefreshCw className="h-4 w-4 ml-2" />
+          </Button>
+         </div>
         </DialogContent>
       </Dialog>
     </>
