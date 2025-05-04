@@ -5987,19 +5987,19 @@ export namespace Prisma {
 
   export type ServerWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    inviteCode?: string
     AND?: ServerWhereInput | ServerWhereInput[]
     OR?: ServerWhereInput[]
     NOT?: ServerWhereInput | ServerWhereInput[]
     name?: StringFilter<"Server"> | string
     imageUrl?: StringFilter<"Server"> | string
-    inviteCode?: StringFilter<"Server"> | string
     profileId?: StringFilter<"Server"> | string
     createdAt?: DateTimeFilter<"Server"> | Date | string
     updatedAt?: DateTimeFilter<"Server"> | Date | string
     profile?: XOR<ProfileScalarRelationFilter, ProfileWhereInput>
     members?: MemberListRelationFilter
     channels?: ChannelListRelationFilter
-  }, "id">
+  }, "id" | "inviteCode">
 
   export type ServerOrderByWithAggregationInput = {
     id?: SortOrder

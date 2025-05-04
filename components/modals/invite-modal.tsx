@@ -109,7 +109,7 @@ export const InviteModal = () => {
           onClick={onNew}
           variant="link"
           size="sm"
-            className="text-xs text-zinc-500 mt-4"
+            className="mt-4 w-full cursor-pointer text-xs tracking-wider text-zinc-800"
           >
             Generate a new link
             <RefreshCw className="h-4 w-4 ml-2" />
