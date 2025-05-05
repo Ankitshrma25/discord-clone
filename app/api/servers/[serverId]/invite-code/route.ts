@@ -16,8 +16,10 @@ export async function PATCH(
         if (!profile) {
             return new NextResponse("Unauthorized", { status: 401 });
         }
+        // dynamic api route
+        const { serverId } = await params;
 
-        if (!params.serverId) {
+        if (!serverId) {
             return new NextResponse("Server ID missing", { status: 400 });
         }
 

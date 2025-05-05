@@ -143,7 +143,7 @@ export const InitialModal = () => {
                             {...field}
                             disabled={isloading}
                             className="border-0 bg-zinc-300/50 text-black focus-visible:ring-0 focus-visible:ring-offset-0 dark:bg-zinc-300/50"
-                            {...field}
+                            {...field} // I will Check this later Ankit
                           />
                         </FormControl>
                         <FormMessage />

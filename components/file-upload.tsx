@@ -20,6 +20,8 @@ export const FileUpload = ({
     value,
     endpoint
 }: FileUploadProps) => {
+   
+    // const fileType = value ? value.split(".").pop() : null;
     const fileType = value?.split(".").pop();
 
     if (value && fileType !== "pdf") {
