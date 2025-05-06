@@ -2,6 +2,9 @@
 
 "use client";
 
+interface ServerSearchProps {
+    
+}
 
 export const ServerSearch = () => {
     return (
