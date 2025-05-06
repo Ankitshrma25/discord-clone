@@ -6,7 +6,7 @@
 export const ServerSearch = () => {
     return (
         <div>
-            Server 
+            Server search component
         </div>
     )
 };
