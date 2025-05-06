@@ -73,6 +73,7 @@ export const ServerHeader = ({ server, role }: ServerHeaderProps) => {
                     )}
                     {isModerator && (
                         <DropdownMenuItem
+                            onClick={() => onOpen("createChannel", { server })}
                             className="px-3 py-2 text-sm cursor-pointer"
                         >
                             Create Channel
