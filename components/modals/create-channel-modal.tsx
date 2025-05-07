@@ -42,6 +42,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { useEffect } from "react";
 
 
 
@@ -65,13 +66,15 @@ const formSchema = z.object({
 export const CreateChannelModal = () => {
 
     // Modal Store for opening and closing the modal
-    const { isOpen, onClose, type } = useModal();   
+    const { isOpen, onClose, type, data } = useModal();   
     // useRouter hook to navigate
     const router = useRouter(); 
     const params = useParams();
 
     // This is for opening the modal for creating a server
     const isModalOpen = isOpen && type === "createChannel";
+
+    const { channelType } = data;
    
 
     // Form validation from zod
@@ -79,9 +82,17 @@ export const CreateChannelModal = () => {
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: "",
-            type: ChannleType.TEXT,
+            type: channelType || ChannleType.TEXT,
         },
     });
+
+    useEffect(() => {
+        if (channelType) {
+            form.setValue("type", channelType);
+        } else {
+          form.setValue("type", ChannleType.TEXT);
+        }
+    }, [channelType, form]);
 
     // Loading state for the form
     const isloading = form.formState.isSubmitting;
