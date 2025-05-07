@@ -7,7 +7,7 @@
 
 import qs from "query-string";
 import { useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import {
     Dialog,
@@ -32,8 +32,7 @@ export const DeleteChannelModal = () => {
     const { isOpen, onClose, type, data } = useModal();
     // Navigation Hook
     const router = useRouter();
-    // params hook
-    const params = useParams();
+   
 
     // This is for opening the modal for creating a server
     const isModalOpen = isOpen && type === "deleteChannel";
@@ -49,7 +48,7 @@ export const DeleteChannelModal = () => {
             const url = qs.stringifyUrl({
                 url: `/api/channels/${channel?.id}`,
                 query: {
-                    serverId: params?.id,
+                    serverId: server?.id,
                 },
             });
             
@@ -57,7 +56,7 @@ export const DeleteChannelModal = () => {
 
             onClose();
             router.refresh();
-            router.push(`/servers/${params?.serverId}`);
+            router.push(`/servers/${server?.id}`);
         } catch (error) {
           console.error("Error leaving server:", error);
         } finally {
