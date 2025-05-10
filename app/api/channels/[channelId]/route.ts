@@ -8,13 +8,14 @@ import { NextResponse } from "next/server";
 
 export async function DELETE(
     req: Request, 
-    { params }: { params: { channelId: string } }
+    { params }: { params: Promise<{ channelId: string }> }
 ) {
    try {
        // Get current profile
        const profile = await currentProfile();
+       // parse the request URL to get the search parameters
         const { searchParams } = new URL(req.url);
-
+        // Get the serverId from the search parameters
         const serverId = searchParams.get("serverId");
 
        // Check if profile exists
@@ -26,11 +27,15 @@ export async function DELETE(
        if (!serverId) {
            return new NextResponse("Server ID missing", { status: 400 });
        }
+
+       // get the channel Id from the request parameters
+       const { channelId } = await params;
        //Check if channelId is provided
-       if (!params.channelId) {
+       
+       if (!channelId) {
            return new NextResponse("Channel ID missing", { status: 400 });
        }
-       // Update the server
+       // Delete the channel from the database
        const server = await db.server.update({
            where: {
                id: serverId,
@@ -46,15 +51,16 @@ export async function DELETE(
            data: {
                channels: {
                    delete: {
-                       id: params.channelId,
+                       id: channelId,
                        name: {
                            not: "General"
-                       }
-                   }
-               }
-           }
+                       },
+                   },
+               },
+           },
        });
 
+       // Return the updated server
        return NextResponse.json(server);
    } catch (error) {
        console.log("[CHANNEL_ID_DELETE]", error);
@@ -64,14 +70,17 @@ export async function DELETE(
 
 export async function PATCH(
     req: Request, 
-    { params }: { params: { channelId: string } }
+    { params }: { params: Promise<{ channelId: string }> }
 ) {
    try {
        // Get current profile
        const profile = await currentProfile();
-       const { name, type } = await req.json();
-        const { searchParams } = new URL(req.url);
 
+       // Destructure name and type from the request body
+       const { name, type } = await req.json();
+       // Parse the request URL to get the search parameters
+        const { searchParams } = new URL(req.url);
+        // Get the serverId from the search parameters
         const serverId = searchParams.get("serverId");
 
        // Check if profile exists
@@ -83,8 +92,11 @@ export async function PATCH(
        if (!serverId) {
            return new NextResponse("Server ID missing", { status: 400 });
        }
+
+       // get the channel Id from the request parameters
+       const { channelId } = await params;
        //Check if channelId is provided
-       if (!params.channelId) {
+       if (!channelId) {
            return new NextResponse("Channel ID missing", { status: 400 });
        }
 
@@ -92,7 +104,7 @@ export async function PATCH(
            return new NextResponse("Name cannot be 'General'", { status: 400 });
        }
 
-       // Update the server
+       // Delete the channel from the database
        const server = await db.server.update({
            where: {
                id: serverId,
@@ -109,22 +121,24 @@ export async function PATCH(
                channels: {
                    update: {
                        where: {
-                           id: params.channelId,
+                           id: channelId,
                            NOT: {
                                name: "General"
                            },
                        },
                        data: {
-                           name: name,
-                           type: type,
+                           name,
+                           type,
                        }
                    }
                }
            }
        });
 
+       // Return the updated server
        return NextResponse.json(server);
    } catch (error) {
+    console.log("Eror hai bhaiya idhr");
        console.log("[CHANNEL_ID_PATCH]", error);
        return new NextResponse("Internal Error", { status: 500 });
    } 

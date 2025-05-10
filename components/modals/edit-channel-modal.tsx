@@ -32,7 +32,7 @@ import  {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-modal-store";
 
 import {
@@ -69,6 +69,9 @@ export const EditChannelModal = () => {
     const { isOpen, onClose, type, data } = useModal();   
     // useRouter hook to navigate
     const router = useRouter(); 
+
+    //Params Hook
+    const params = useParams();
    
 
     // This is for opening the modal for creating a server
@@ -99,7 +102,7 @@ export const EditChannelModal = () => {
     const onSubmit = async (data: z.infer<typeof formSchema>) => {
         try {
           const url = qs.stringifyUrl({
-            url: "/api/channels/${channel?.id}",
+            url: `/api/channels/${channel?.id}`,
             query: {
               serverId: server?.id,
             },
