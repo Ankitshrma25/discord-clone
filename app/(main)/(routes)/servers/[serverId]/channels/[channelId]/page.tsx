@@ -1,7 +1,63 @@
-const ChannelIdPage = () => {
-    return ( 
-        <div>Channel Id Page</div>
-     );
+//app/(main)/(routes)/servers/[serverId]/channels/[channelId]/page.tsx
+
+import { currentProfile } from "@/lib/current-profile";
+
+import { redirect } from "next/navigation";
+
+import { db } from "@/lib/db";
+import { channel } from "diagnostics_channel";
+import { ChatHeader } from "@/components/chat/chat-header";
+
+interface ChannelIdPageProps {
+    params: Promise<{
+        serverId: string,
+        channelId: string,
+    }>
 }
- 
+
+const ChannelIdPage = async ({
+    params,
+}: ChannelIdPageProps) => {
+
+    //fatching current profile
+    const profile = await currentProfile();
+
+    //if no profile, redirect to sign in
+    if (!profile) {
+        return redirect("/");
+    }
+
+    // fetching the server id from params
+    const { channelId, serverId } = await params;
+
+    // fatching the channels from db
+    const channel = await db.channel.findUnique({
+        where: {
+            id: channelId,
+        },
+    });
+
+    // fatching the memeber from db
+    const member = await db.member.findFirst({
+        where: {
+            serverId: serverId,
+            profileId: profile.id
+        },
+        include: {
+            profile: true,
+        }
+    });
+
+    // In case there is no channel or member
+    if (!channel || !member) {
+        return redirect("/");
+    }
+
+    return (
+        <div className="bg-white dark:bg-[#313338] flex flex-col h-full">
+            <ChatHeader />
+        </div>
+    );
+}
+
 export default ChannelIdPage;
