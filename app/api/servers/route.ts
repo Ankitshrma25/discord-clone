@@ -24,7 +24,7 @@ export async function POST(req: Request) {
                 inviteCode: uuidv4(), // Generate a unique invite code for the server
                 channels: {
                     create: [
-                        { name: "General", profileId: profile.id }, // Create a default channel named "General" for the server by the profile owner
+                        { name: "general", profileId: profile.id }, // Create a default channel named "general" for the server by the profile owner
                     ]
                 },
                 members: {

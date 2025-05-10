@@ -53,7 +53,7 @@ export async function DELETE(
                    delete: {
                        id: channelId,
                        name: {
-                           not: "General"
+                           not: "general"
                        },
                    },
                },
@@ -100,8 +100,8 @@ export async function PATCH(
            return new NextResponse("Channel ID missing", { status: 400 });
        }
 
-       if (name === "General") {
-           return new NextResponse("Name cannot be 'General'", { status: 400 });
+       if (name === "general") {
+           return new NextResponse("Name cannot be 'general'", { status: 400 });
        }
 
        // Delete the channel from the database
@@ -123,7 +123,7 @@ export async function PATCH(
                        where: {
                            id: channelId,
                            NOT: {
-                               name: "General"
+                               name: "general"
                            },
                        },
                        data: {

@@ -46,7 +46,7 @@ export const ServerChannel = ({
     // Mapping of channel types to icons
   const icon = iconMap[channel.type];
 
-  // Onclick function
+  // Onclick function to navigate to the channel page
   const onClick = () => {
     router.push(`/servers/${params?.serverId}/channels/${channel.id}`);
   };
@@ -54,8 +54,9 @@ export const ServerChannel = ({
 
   const onAction = (e: React.MouseEvent, action: ModalType) => {
     e.stopPropagation();
+    //open the model
     onOpen(action, { channel, server });
-  }
+  };
 
     return (
        <>
@@ -73,7 +74,7 @@ export const ServerChannel = ({
         )}>
             {channel.name}
         </p>
-        {channel.name !== "General" && role !== MemberRole.GUEST && (
+        {channel.name !== "general" && role !== MemberRole.GUEST && (
             <div className="ml-auto flex items-center gap-x-2">
                 <ActionTooltip side="top" align="center" label="Edit">
                     <Edit 
@@ -89,7 +90,7 @@ export const ServerChannel = ({
                 </ActionTooltip>
             </div>
         )}
-        {channel.name === "General" && (
+        {channel.name === "general" && (
             <Lock className="ml-auto w-4 h-4 text-zinc-500 dark:text-zinc-400" />
         )}
        </button>

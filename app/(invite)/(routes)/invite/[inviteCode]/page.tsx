@@ -9,10 +9,10 @@ import { redirect } from "next/navigation";
 
 
 interface InviteCodePageProps {
-    params: {
+    params: Promise<{
         inviteCode: string,
 
-     };
+     }>
 }
 
 const InviteCodePage = async ({
@@ -22,18 +22,20 @@ const InviteCodePage = async ({
     // fatch the profile
     const profile = await currentProfile();
 
+    const { inviteCode } = await params;
+
     if (!profile) {
         return <RedirectToSignIn />
     }
 
-    if (!params.inviteCode) {
+    if (!inviteCode) {
         return redirect("/");
     }
 
     // checking if the person is already the part of the server
     const existingServer = await db.server.findFirst({
         where: {
-            inviteCode: params.inviteCode,
+            inviteCode: inviteCode,
             members: {
                 some: {
                     profileId: profile.id,
@@ -49,7 +51,7 @@ const InviteCodePage = async ({
 
     const server = await db.server.update({
         where: {
-            inviteCode: params.inviteCode,
+            inviteCode: inviteCode,
         },
         data: {
             members: {
