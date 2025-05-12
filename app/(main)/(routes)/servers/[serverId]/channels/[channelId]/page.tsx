@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { channel } from "diagnostics_channel";
 import { ChatHeader } from "@/components/chat/chat-header";
+import { ChatInput } from "@/components/chat/chat-input";
 
 interface ChannelIdPageProps {
     params: Promise<{
@@ -60,6 +61,8 @@ const ChannelIdPage = async ({
             serverId={channel.serverId}
             type="channel"
             />
+            <div className="flex-1">Future massages</div>
+            <ChatInput />
         </div>
     );
 }
