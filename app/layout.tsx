@@ -11,6 +11,7 @@ import { ClerkProvider } from '@clerk/nextjs'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { cn } from '@/lib/utils'
+import { SocketProvider } from '@/components/providers/socket-provider'
 
 
 const geistSans = Geist({
@@ -50,10 +51,11 @@ export default function RootLayout({
             disableTransitionOnChange
           >
 
-            
+          <SocketProvider> 
           <ModalProvider />
             
           {children}
+          </SocketProvider>
           </ThemeProvider>
         </body>
       </html>
