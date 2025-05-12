@@ -2,8 +2,10 @@
 // This is the chat input component
 "use client";
 
-import { Plus, Smile } from "lucide-react";
 import * as z from "zod";
+import axios from "axios";
+import qs from "query-string";
+import { Plus, Smile } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -42,8 +44,17 @@ export const ChatInput = ({
 
     const isLoading = form.formState.isSubmitting;
 
-    const onSubmit = async (value: z.infer<typeof formSchema>) => {
-        console.log(value);
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        try {
+            const url = qs.stringifyUrl({
+                url: apiUrl,
+                query,
+            });
+
+            await axios.post(url, { content: values.content });
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (
