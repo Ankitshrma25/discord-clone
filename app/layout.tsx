@@ -12,6 +12,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { cn } from '@/lib/utils'
 import { SocketProvider } from '@/components/providers/socket-provider'
+import { QueryProvider } from '@/components/providers/query-provider'
 
 
 const geistSans = Geist({
@@ -53,8 +54,9 @@ export default function RootLayout({
 
           <SocketProvider> 
           <ModalProvider />
-            
+          <QueryProvider>
           {children}
+          </QueryProvider>  
           </SocketProvider>
           </ThemeProvider>
         </body>

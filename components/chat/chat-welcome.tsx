@@ -27,6 +27,8 @@ export const ChatWelcome = ({
                 ? `This is the start of the #${name} channel` 
                 : `This is the start of your conversation with ${name}`}
             </p>
+
+            
         </div>
     )
 }

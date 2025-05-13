@@ -4,6 +4,8 @@
 import { Member } from "@prisma/client";
 
 import { ChatWelcome } from "./chat-welcome";
+import { useChatQuery } from "@/hooks/use-chat-query";
+import { Loader2, ServerCrash } from "lucide-react";
 
 interface ChatMessagesprops {
     name: string;
@@ -28,13 +30,52 @@ export const ChatMessages = ({
     paramValue,
     type
 }: ChatMessagesprops) => {
+    // Make the query key for the useChatQuery hook
+    const queryKey = `chat:${chatId}`
+
+    const {
+        data,
+        fetchNextPage,
+        hasNextPage,
+        isFetchingNextPage,
+        status,
+    } = useChatQuery({
+        queryKey,
+        apiUrl,
+        paramKey,
+        paramValue
+    });
+    
+    // If status is pending, return a loading message
+    if (status === "pending") {
+        return (
+            <div className="flex-1 flex justify-center items-center">
+                <Loader2 className="my-4 w-7 h-7 text-zinc-500 animate-spin" />
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                    Loading messages...
+                </p>
+            </div>
+        );
+    }
+
+    // If status is error, return an error message
+     if (status === "error") {
+        return (
+            <div className="flex-1 flex justify-center items-center">
+                <ServerCrash className="my-4 w-7 h-7 text-zinc-500" />
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                    Something went wrong!
+                </p>
+            </div>
+        );
+    }
+
     return (
         <div className="flex flex-col flex-1 py-4 overflow-auto">
             <div className="flex-1 px-4 sm:px-6" />
             <ChatWelcome 
                 type={type}
-                name={name}
-                
+                name={name}  
             />
         </div>
     )
