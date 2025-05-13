@@ -8,6 +8,7 @@ import { db } from "@/lib/db";
 import { channel } from "diagnostics_channel";
 import { ChatHeader } from "@/components/chat/chat-header";
 import { ChatInput } from "@/components/chat/chat-input";
+import { ChatMessages } from "@/components/chat/chat-messages";
 
 interface ChannelIdPageProps {
     params: Promise<{
@@ -61,7 +62,20 @@ const ChannelIdPage = async ({
             serverId={channel.serverId}
             type="channel"
             />
-            <div className="flex-1">Future massages</div>
+            <ChatMessages 
+                member={member}
+                name={channel.name}
+                type="channel"
+                chatId={channel.id}
+                apiUrl="/api/messages"
+                socketUrl="/api/socket/messages"
+                socketQuery={{
+                    channelId: channel.id,
+                    serverId: channel.serverId,
+                }}
+                paramKey="channelId"
+                paramValue={channel.id}
+            />
             <ChatInput 
                 name={channel.name}
                 type="channel"
