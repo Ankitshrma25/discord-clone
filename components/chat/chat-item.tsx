@@ -24,6 +24,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { set } from "date-fns";
+import { useModal } from "@/hooks/use-modal-store";
 
 
 interface ChatItemProps {
@@ -63,7 +64,8 @@ export const ChatItem = ({
 }: ChatItemProps) => {
 
     const [isEditing, setIsEditing] = useState(false);
-    const [isDeleting, setIsDeleting] = useState(false);
+    const { onOpen } = useModal();
+    
 
     // Escaping fucntionality from the editing the message
     useEffect(() => {
@@ -233,7 +235,10 @@ export const ChatItem = ({
                     )}
                     <ActionTooltip label="Delete">
                         <Trash
-                            onClick={() => setIsEditing(true)}
+                            onClick={() => onOpen("deleteMessage", {
+                                apiUrl: `${socketUrl}/${id}`,
+                                query: socketQuery,
+                            })}
                             className="size-4 ml-auto cursor-pointer text-zinc-500 transition hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300"
                         />
                     </ActionTooltip>
