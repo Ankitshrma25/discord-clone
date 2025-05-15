@@ -1,6 +1,6 @@
 // components/server/server-sidebar.tsx
 
-import { ChannleType, MemberRole } from "@prisma/client";
+import { ChannleType, MemberRole } from "@/lib/generated/prisma/client";
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
 

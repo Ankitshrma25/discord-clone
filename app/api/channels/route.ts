@@ -1,7 +1,7 @@
 // app/api/channels/route.ts
 // this route is for creating a channel in a server
 import { NextResponse } from "next/server";
-import { MemberRole } from "@prisma/client";
+import { MemberRole } from "@/lib/generated/prisma/client";
 
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";

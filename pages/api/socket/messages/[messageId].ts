@@ -3,7 +3,7 @@
 import { currentProfilePages } from "@/lib/current-profile-pages";
 import { db } from "@/lib/db";
 import { NextApiResponseServerIo } from "@/types";
-import { MemberRole } from "@prisma/client";
+import { MemberRole } from "@/lib/generated/prisma/client";
 import { NextApiRequest } from "next";
 
 

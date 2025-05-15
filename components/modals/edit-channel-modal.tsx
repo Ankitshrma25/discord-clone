@@ -8,7 +8,7 @@ import qs from "query-string";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { ChannleType } from "@prisma/client";
+import { ChannleType } from "@/lib/generated/prisma/client";
 import axios from "axios";
 
 

@@ -10,6 +10,7 @@ import { useChatQuery } from "@/hooks/use-chat-query";
 import { Loader2, ServerCrash } from "lucide-react";
 import { Message, Member, Profile } from "@/lib/generated/prisma/client";
 import { ChatItem } from "./chat-item";
+import { useChatSocket } from "@/hooks/use-chat-socket";
 
 const DATE_FORMAT = "d MMM yyyy, HH:mm";
 
@@ -45,6 +46,8 @@ export const ChatMessages = ({
 }: ChatMessagesprops) => {
     // Make the query key for the useChatQuery hook
     const queryKey = `chat:${chatId}`
+    const addKey = `chat:${chatId}:messages`
+    const updateKey = `chat:${chatId}:messages:update`
 
     const {
         data,
@@ -58,6 +61,9 @@ export const ChatMessages = ({
         paramKey,
         paramValue
     });
+
+    useChatSocket({ queryKey, addKey, updateKey});
+    
     
     // If status is pending, return a loading message
     if (status === "pending") {

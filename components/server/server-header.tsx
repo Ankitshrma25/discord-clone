@@ -3,7 +3,7 @@
 "use client";
 
 import { ServerWithMembersWithProfiles } from "@/types";
-import { MemberRole } from "@prisma/client";
+import { MemberRole } from "@/lib/generated/prisma/client";
 import { ChevronDown, LogOut, Settings, Trash, UserCircle, UserPlus, Users } from "lucide-react";
 
 import {

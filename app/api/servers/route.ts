@@ -1,7 +1,7 @@
 // app/api/servers/route.ts
 import { v4 as uuidv4 } from "uuid"; // Import the uuid library to generate unique IDs for the server
 import { NextResponse } from "next/server";
-import { MemberRole } from "@prisma/client";
+import { MemberRole } from "@/lib/generated/prisma/client";
 
 
 import { currentProfile } from "@/lib/current-profile";

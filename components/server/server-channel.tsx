@@ -10,7 +10,7 @@ import {
     ChannleType, 
     MemberRole, 
     Server 
-} from "@prisma/client";
+} from "@/lib/generated/prisma/client";
 import { useParams, useRouter } from "next/navigation";
 import { ActionTooltip } from "@/components/action-tooltip";
 import { ModalType, useModal } from "@/hooks/use-modal-store";
