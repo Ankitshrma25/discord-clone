@@ -18,7 +18,7 @@ interface FileUploadProps {
 export const FileUpload = ({
     onChange,
     value,
-    endpoint
+    endpoint,
 }: FileUploadProps) => {
    
     // const fileType = value ? value.split(".").pop() : null;
@@ -46,6 +46,7 @@ export const FileUpload = ({
         )
     }
 
+    // function to handle pdf upload
     if (value && fileType === "pdf") {
         return (
             <div className="relative flex items-center p-2 mt-2 rounded-md bg-background/10">
