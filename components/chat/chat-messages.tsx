@@ -2,7 +2,8 @@
 "use client";
 
 
-import { Fragment } from "react";
+import { Fragment, useRef } from "react";
+
 import { format } from "date-fns";
 
 import { ChatWelcome } from "./chat-welcome";
@@ -11,6 +12,7 @@ import { Loader2, ServerCrash } from "lucide-react";
 import { Message, Member, Profile } from "@/lib/generated/prisma/client";
 import { ChatItem } from "./chat-item";
 import { useChatSocket } from "@/hooks/use-chat-socket";
+import { useChatScroll } from "@/hooks/use-chat-scroll";
 
 const DATE_FORMAT = "d MMM yyyy, HH:mm";
 
@@ -46,8 +48,16 @@ export const ChatMessages = ({
 }: ChatMessagesprops) => {
     // Make the query key for the useChatQuery hook
     const queryKey = `chat:${chatId}`
+    // Make the add and update keys for the useChatSocket hook
     const addKey = `chat:${chatId}:messages`
+    // Make the add and update keys for the useChatSocket hook
     const updateKey = `chat:${chatId}:messages:update`
+
+    // Make a ref for the chat container
+    const chatRef = useRef<HTMLDivElement>(null);
+
+    // Make a ref for the chat container
+    const bottomRef = useRef<HTMLDivElement>(null);
 
     const {
         data,
@@ -62,8 +72,18 @@ export const ChatMessages = ({
         paramValue
     });
 
+    // Use the useChatSocket hook
     useChatSocket({ queryKey, addKey, updateKey});
     
+     // Use the useChatScroll hook
+  useChatScroll({
+    chatRef,
+    bottomRef,
+    shouldLoadMore: !isFetchingNextPage && !!hasNextPage,
+    count: data?.pages?.[0]?.items?.length ?? 0,
+    loadMore: fetchNextPage,
+  });
+
     
     // If status is pending, return a loading message
     if (status === "pending") {
@@ -90,12 +110,28 @@ export const ChatMessages = ({
     }
 
     return (
-        <div className="flex flex-col flex-1 py-4 overflow-auto">
-            <div className="flex-1 px-4 sm:px-6" />
-            <ChatWelcome 
+        <div ref={chatRef} className="flex flex-col flex-1 py-4 overflow-auto">
+           {!hasNextPage && <div className="flex-1 px-4 sm:px-6" />}
+            {!hasNextPage && (
+                <ChatWelcome 
                 type={type}
                 name={name}  
             />
+            )}
+            {hasNextPage && (
+                <div className="flex justify-center">
+                    {isFetchingNextPage ? (
+                        <Loader2 className="my-4 w-6 h-6 text-zinc-500 animate-spin" />
+                    ) : (
+                        <button
+                            onClick={() => fetchNextPage()}
+                            className="text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 text-xs my-4 dark:hover:text-zinc-300 transition"
+                        >
+                            Load previous messages
+                        </button>
+                    )}
+                </div>
+            )}
             <div className="flex flex-col-reverse mt-auto">
                 {data?.pages?.map((group, i) => (
                     <Fragment key={i}>
@@ -117,6 +153,7 @@ export const ChatMessages = ({
                     </Fragment>
                 ))}
             </div>
+            <div ref={bottomRef} />
         </div>
     )
 }
