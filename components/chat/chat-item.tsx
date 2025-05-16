@@ -103,15 +103,12 @@ export const ChatItem = ({
         try {
             const url = qs.stringifyUrl({
                 url: `${socketUrl}/${id}`,
-                query: socketQuery,
+                query: socketQuery // Make sure socketQuery contains conversationId
             });
 
             await axios.patch(url, values);
-
             form.reset();
             setIsEditing(false);
-            
-           
         } catch (error) {
             console.log(error);
         } 
@@ -249,7 +246,7 @@ export const ChatItem = ({
                         <Trash
                             onClick={() => onOpen("deleteMessage", {
                                 apiUrl: `${socketUrl}/${id}`,
-                                query: socketQuery,
+                                query: socketQuery // Make sure this includes conversationId
                             })}
                             className="size-4 ml-auto cursor-pointer text-zinc-500 transition hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300"
                         />

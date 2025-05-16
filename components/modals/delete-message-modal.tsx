@@ -43,14 +43,13 @@ export const DeleteMessageModal = () => {
 
             const url = qs.stringifyUrl({
                 url: apiUrl || "",
-                query,
+                query: query // Add this line to include the query parameters
             });
             
             await axios.delete(url);
-
             onClose();           
         } catch (error) {
-          console.error("Error leaving server:", error);
+            console.error("Error deleting message:", error);
         } finally {
             SetIsLoading(false);
         }
