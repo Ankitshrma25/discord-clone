@@ -9,6 +9,8 @@ import { channel } from "diagnostics_channel";
 import { ChatHeader } from "@/components/chat/chat-header";
 import { ChatInput } from "@/components/chat/chat-input";
 import { ChatMessages } from "@/components/chat/chat-messages";
+import { ChannleType } from "@/lib/generated/prisma/client";
+import { MediaRoom } from "@/components/media-room";
 
 interface ChannelIdPageProps {
     params: Promise<{
@@ -57,34 +59,53 @@ const ChannelIdPage = async ({
 
     return (
         <div className="bg-white dark:bg-[#313338] flex flex-col h-full">
-            <ChatHeader 
-            name={channel.name}
-            serverId={channel.serverId}
-            type="channel"
-            />
-            <ChatMessages 
-                member={member}
+            <ChatHeader
                 name={channel.name}
+                serverId={channel.serverId}
                 type="channel"
+            />
+            {channel.type === ChannleType.TEXT && (
+                <>
+                    <ChatMessages
+                        member={member}
+                        name={channel.name}
+                        type="channel"
+                        chatId={channel.id}
+                        apiUrl="/api/messages"
+                        socketUrl="/api/socket/messages"
+                        socketQuery={{
+                            channelId: channel.id,
+                            serverId: channel.serverId,
+                        }}
+                        paramKey="channelId"
+                        paramValue={channel.id}
+                    />
+                    <ChatInput
+                        name={channel.name}
+                        type="channel"
+                        apiUrl="/api/socket/messages"
+                        query={{
+                            channelId: channel.id,
+                            serverId: channel.serverId,
+                        }}
+                    />
+                </>
+            )}
+            {channel.type === ChannleType.AUDIO && (
+               <MediaRoom 
                 chatId={channel.id}
-                apiUrl="/api/messages"
-                socketUrl="/api/socket/messages"
-                socketQuery={{
-                    channelId: channel.id,
-                    serverId: channel.serverId,
-                }}
-                paramKey="channelId"
-                paramValue={channel.id}
-            />
-            <ChatInput 
-                name={channel.name}
-                type="channel"
-                apiUrl="/api/socket/messages"
-                query={{
-                    channelId: channel.id,
-                    serverId: channel.serverId,
-                }}
-            />
+                video={false}
+                audio={true}
+               /> 
+            )}
+
+            {channel.type === ChannleType.VIDEO && (
+               <MediaRoom 
+                chatId={channel.id}
+                video={true}
+                audio={true}
+               /> 
+            )}
         </div>
     );
 }
